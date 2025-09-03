@@ -1,0 +1,8 @@
+*.pyc
+venv
+*.swp
+.idea/*
+*.log
+*.ipynb
+media/*
+.env
