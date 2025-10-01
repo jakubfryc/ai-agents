@@ -3,6 +3,7 @@
 POST http://localhost:8000/mcp
 content-type: application/json
 accept: application/json, text/event-stream
+mcp-protocol-version: 2025-06-18
 
 {
   "jsonrpc": "2.0",
@@ -31,12 +32,42 @@ POST http://localhost:8000/mcp
 Content-Type: application/json
 accept: application/json, text/event-stream
 mcp-session-id: {{session_id}}
+mcp-protocol-version: 2025-06-18
 
 {
   "jsonrpc": "2.0",
   "method": "notifications/initialized"
 }
 
+### List Prompts
+< {% request.variables.set("session_id", client.global["vars"]["mcp-session-id"]) %}
+POST http://localhost:8000/mcp
+Accept: application/json
+content-type: application/json
+accept: application/json, text/event-stream
+mcp-session-id: {{session_id}}
+mcp-protocol-version: 2025-06-18
+
+{
+  "method": "prompts/list",
+  "jsonrpc": "2.0",
+  "id": 0
+}
+
+### List Resources
+< {% request.variables.set("session_id", client.global["vars"]["mcp-session-id"]) %}
+POST http://localhost:8000/mcp
+Accept: application/json
+content-type: application/json
+accept: application/json, text/event-stream
+mcp-session-id: {{session_id}}
+mcp-protocol-version: 2025-06-18
+
+{
+  "method": "resources/list",
+  "jsonrpc": "2.0",
+  "id": 15
+}
 ### List Tools
 < {% request.variables.set("session_id", client.global["vars"]["mcp-session-id"]) %}
 POST http://localhost:8000/mcp
@@ -59,16 +90,55 @@ Accept: application/json
 content-type: application/json
 accept: application/json, text/event-stream
 mcp-session-id: {{session_id}}
+mcp-protocol-version: 2025-06-18
 
 {
   "jsonrpc": "2.0",
   "id": 3,
   "method": "tools/call",
   "params": {
-    "name": "greet",
+    "name": "add",
     "arguments": {
-      "name": "Alice"
+      "a": 2,
+      "b": 4
+    }
+  }
+}
+### Prompt Get
+< {% request.variables.set("session_id", client.global["vars"]["mcp-session-id"]) %}
+POST http://localhost:8000/mcp
+Accept: application/json
+content-type: application/json
+accept: application/json, text/event-stream
+mcp-session-id: {{session_id}}
+mcp-protocol-version: 2025-06-18
+
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "method": "prompts/get",
+  "params": {
+    "name": "welcome_message",
+    "arguments": {
+      "name": "Anna"
     }
   }
 }
 
+### Resource read
+< {% request.variables.set("session_id", client.global["vars"]["mcp-session-id"]) %}
+POST http://localhost:8000/mcp
+Accept: application/json
+content-type: application/json
+accept: application/json, text/event-stream
+mcp-session-id: {{session_id}}
+mcp-protocol-version: 2025-06-18
+
+{
+  "jsonrpc": "2.0",
+  "id": 3,
+  "method": "resources/read",
+  "params": {
+    "uri": "calendar://events/2024-01-01"
+  }
+}
